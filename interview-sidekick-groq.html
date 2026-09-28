@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Interview Sidekick — Wipro Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f2fbf4;
+    --card: #ffffff;
+    --card2: #eafbee;
+    --border: #d9ece0;
+    --fg: #1c1c1c;
+    --fg2: #5c6b63;
+    --accent: #2f8d46;
+    --accent-dark: #1e6b34;
+    --accent2: #56c271;
+    --success: #2f8d46;
+    --danger: #d93025;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .app-container {
+    max-width: 480px; margin: 0 auto;
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+
+  header {
+    padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+    background: var(--card);
+    border-bottom: 3px solid var(--accent);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo-area { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .logo-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: #fff; font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .logo-text { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: var(--fg); }
+  .logo-text span { color: var(--accent); }
+  .header-actions { display: flex; gap: 8px; }
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--bg2); border: 1px solid var(--border);
+    color: var(--fg2); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .icon-btn:hover, .icon-btn:active { color: #fff; background: var(--accent); border-color: var(--accent); }
+
+  main { flex: 1; padding: 14px 14px 110px; display: flex; flex-direction: column; gap: 14px; }
+
+  .category-section { display: flex; flex-direction: column; gap: 8px; }
+  .section-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--fg2); padding-left: 2px;
+  }
+  .category-scroll {
+    display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .category-scroll::-webkit-scrollbar { display: none; }
+  .cat-pill {
+    flex-shrink: 0; padding: 7px 14px; border-radius: 16px;
+    background: var(--bg2); border: 1px solid var(--border);
+    color: var(--accent-dark); font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .cat-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .cat-pill:not(.active):hover { border-color: var(--accent); }
+
+  .input-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px;
+  }
+  .input-top { display: flex; gap: 8px; margin-bottom: 10px; }
+  .question-input {
+    flex: 1; background: #fff; border: 1px solid var(--border);
+    border-radius: 10px; padding: 11px 13px; color: var(--fg);
+    font-family: 'Roboto', sans-serif; font-size: 14px;
+    resize: none; outline: none; min-height: 46px; max-height: 120px;
+    transition: border-color 0.2s;
+  }
+  .question-input::placeholder { color: #93a39a; }
+  .question-input:focus { border-color: var(--accent); }
+
+  .voice-btn {
+    width: 46px; height: 46px; border-radius: 10px;
+    background: #fff; border: 1px solid var(--border);
+    color: var(--accent-dark); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s; font-size: 17px; flex-shrink: 0;
+  }
+  .voice-btn.listening {
+    background: var(--danger); border-color: var(--danger);
+    color: #fff; animation: voicePulse 1.2s ease-in-out infinite;
+  }
+  .voice-btn.transcribing {
+    background: var(--accent2); border-color: var(--accent2);
+    color: #fff;
+  }
+  @keyframes voicePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(217, 48, 37, 0.35); }
+    50% { box-shadow: 0 0 0 10px rgba(217, 48, 37, 0); }
+  }
+
+  .input-bottom { display: flex; gap: 8px; align-items: center; }
+  .send-btn {
+    flex: 1; padding: 11px; border-radius: 10px; border: none;
+    background: var(--accent);
+    color: #fff; font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; display: flex; align-items: center;
+    justify-content: center; gap: 8px;
+  }
+  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .send-btn:not(:disabled):hover { background: var(--accent-dark); }
+
+  .voice-status {
+    font-size: 12px; color: var(--danger); font-weight: 500;
+    display: none; align-items: center; gap: 6px; padding: 4px 0;
+  }
+  .voice-status.show { display: flex; }
+  .voice-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--danger); animation: dotBlink 0.8s ease-in-out infinite; }
+  @keyframes dotBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .answer-area { display: flex; flex-direction: column; gap: 14px; }
+
+  .welcome-state { text-align: center; padding: 36px 20px; }
+  .welcome-icon {
+    width: 60px; height: 60px; border-radius: 16px; margin: 0 auto 14px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; color: #fff;
+  }
+  .welcome-title { font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .welcome-sub { color: var(--fg2); font-size: 13.5px; line-height: 1.6; }
+
+  .answer-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px; overflow: hidden;
+    animation: cardSlide 0.3s ease-out;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  @keyframes cardSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .answer-header {
+    padding: 12px 14px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; gap: 10px; background: var(--bg2);
+  }
+  .answer-q-icon {
+    width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: #fff; font-weight: 700; margin-top: 1px;
+  }
+  .answer-q-text { font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 600; line-height: 1.5; flex: 1; color: var(--fg); }
+  .answer-time { font-size: 11px; color: var(--fg2); flex-shrink: 0; margin-top: 3px; }
+
+  .answer-body { padding: 15px; }
+  .answer-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--accent-dark); margin-bottom: 9px;
+  }
+  .answer-text { font-size: 14px; line-height: 1.75; color: var(--fg); }
+  .answer-text strong { color: var(--accent-dark); font-weight: 600; }
+  .answer-text ul, .answer-text ol { padding-left: 20px; margin: 8px 0; }
+  .answer-text li { margin-bottom: 4px; }
+  .answer-text p { margin-bottom: 10px; }
+  .answer-text p:last-child { margin-bottom: 0; }
+  .answer-text code {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    background: var(--card2); padding: 2px 6px; border-radius: 4px;
+    color: var(--accent-dark);
+  }
+
+  .answer-tips {
+    margin-top: 13px; padding: 11px 12px; border-radius: 8px;
+    background: var(--card2); border: 1px solid var(--border);
+  }
+  .tip-label { font-size: 11px; font-weight: 600; color: var(--accent-dark); margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
+  .tip-text { font-size: 13px; line-height: 1.6; color: var(--fg2); }
+
+  .answer-actions { padding: 9px 14px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+  .action-btn {
+    padding: 7px 13px; border-radius: 7px; border: 1px solid var(--border);
+    background: #fff; color: var(--fg2); font-size: 12px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+    font-family: 'Roboto', sans-serif;
+  }
+  .action-btn:hover { border-color: var(--accent); color: var(--accent-dark); }
+  .action-btn.speaking { color: #fff; background: var(--accent); border-color: var(--accent); }
+
+  .loading-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 22px; text-align: center; }
+  .loading-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 10px; }
+  .loading-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: dotLoad 1.2s ease-in-out infinite; }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dotLoad { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
+  .loading-text { font-size: 13px; color: var(--fg2); }
+
+  .history-section { margin-top: 6px; }
+  .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+  .history-clear { font-size: 11px; color: var(--fg2); cursor: pointer; background: none; border: none; font-family: 'Roboto', sans-serif; }
+  .history-clear:hover { color: var(--danger); }
+  .history-item {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 11px 13px; margin-bottom: 7px;
+    cursor: pointer; transition: border-color 0.2s;
+  }
+  .history-item:hover { border-color: var(--accent); }
+  .history-item-q { font-size: 13px; font-weight: 600; margin-bottom: 3px; color: var(--fg); }
+  .history-item-meta { font-size: 11px; color: var(--fg2); }
+
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(20, 30, 25, 0.55); z-index: 200;
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px; width: 100%; max-width: 400px;
+    max-height: 90vh; overflow-y: auto;
+    animation: modalIn 0.25s ease-out;
+  }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .modal-title { font-family: 'Poppins', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 5px; color: var(--fg); }
+  .modal-sub { font-size: 12.5px; color: var(--fg2); margin-bottom: 18px; line-height: 1.5; }
+  .modal-sub a { color: var(--accent-dark); font-weight: 600; }
+  .field-label { font-size: 12px; font-weight: 600; color: var(--fg2); margin-bottom: 6px; display: block; }
+  .field-input {
+    width: 100%; background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 11px 13px; color: var(--fg);
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .field-input:focus { border-color: var(--accent); }
+  .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+  .modal-btn {
+    flex: 1; padding: 11px; border-radius: 9px; font-size: 13.5px;
+    font-weight: 600; cursor: pointer; transition: all 0.2s;
+    font-family: 'Poppins', sans-serif; border: none;
+  }
+  .modal-btn.primary { background: var(--accent); color: #fff; }
+  .modal-btn.primary:hover { background: var(--accent-dark); }
+  .modal-btn.secondary { background: var(--bg2); color: var(--fg2); border: 1px solid var(--border); }
+
+  .toast-container {
+    position: fixed; top: 64px; left: 50%; transform: translateX(-50%);
+    z-index: 300; display: flex; flex-direction: column; gap: 8px;
+    pointer-events: none; width: 90%; max-width: 400px;
+  }
+  .toast { padding: 11px 15px; border-radius: 9px; font-size: 13px; font-weight: 500; pointer-events: auto; animation: toastIn 0.25s ease-out; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+  .toast.success { background: #eafbee; border: 1px solid #bfe8c9; color: var(--accent-dark); }
+  .toast.error { background: #fdecea; border: 1px solid #f6c1bc; color: var(--danger); }
+  .toast.info { background: var(--bg2); border: 1px solid var(--border); color: var(--fg2); }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .quick-section { display: flex; flex-direction: column; gap: 8px; }
+  .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quick-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 11px; cursor: pointer; transition: all 0.2s; }
+  .quick-card:hover { border-color: var(--accent); background: var(--card2); }
+  .quick-card-icon { font-size: 15px; margin-bottom: 5px; }
+  .quick-card-text { font-size: 12px; color: var(--fg); line-height: 1.4; }
+
+  .mode-note { font-size: 11px; color: var(--fg2); display: flex; align-items: center; gap: 5px; padding: 2px 2px 0; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  .api-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 6px; margin-left: 6px; }
+  .api-badge.connected { background: #eafbee; color: var(--accent-dark); }
+  .api-badge.disconnected { background: #fdecea; color: var(--danger); }
+
+  .field-group { margin-bottom: 15px; }
+  .field-group:last-of-type { margin-bottom: 0; }
+
+  select.field-input {
+    font-family: 'Roboto', sans-serif;
+    appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235c6b63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+  select.field-input option { background: #fff; color: var(--fg); }
+
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; }
+  .toggle-switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: var(--border); border-radius: 24px; transition: 0.2s; }
+  .toggle-slider::before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.2s; }
+  .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <header>
+    <div class="logo-area">
+      <div class="logo-icon">&lt;/&gt;</div>
+      <div class="logo-text">Interview<span>Sidekick</span></div>
+      <span class="api-badge disconnected" id="apiBadge">
+        <i class="fas fa-circle" style="font-size:5px"></i> No API
+      </span>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="toggleSettings()" aria-label="Settings"><i class="fas fa-gear"></i></button>
+      <button class="icon-btn" onclick="clearHistory()" aria-label="Clear history"><i class="fas fa-trash-can"></i></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="category-section">
+      <div class="section-label">Interview Focus</div>
+      <div class="category-scroll" id="catScroll">
+        <button class="cat-pill active" data-cat="general" onclick="selectCat(this)">General</button>
+        <button class="cat-pill" data-cat="behavioral" onclick="selectCat(this)">Behavioral</button>
+        <button class="cat-pill" data-cat="pyfast" onclick="selectCat(this)">Python/FastAPI</button>
+        <button class="cat-pill" data-cat="genai" onclick="selectCat(this)">GenAI/RAG</button>
+        <button class="cat-pill" data-cat="projects" onclick="selectCat(this)">My Projects</button>
+        <button class="cat-pill" data-cat="wipro" onclick="selectCat(this)">Wipro Role</button>
+        <button class="cat-pill" data-cat="cloud" onclick="selectCat(this)">System/Cloud</button>
+      </div>
+    </section>
+
+    <section class="input-card">
+      <div class="voice-status" id="voiceStatus"><span class="voice-dot"></span> <span id="voiceStatusText">Listening...</span></div>
+      <div class="input-top">
+        <textarea class="question-input" id="questionInput" rows="2" placeholder="Type or ask an interview question..." aria-label="Interview question"></textarea>
+        <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()" aria-label="Voice input"><i class="fas fa-microphone"></i></button>
+      </div>
+      <div class="input-bottom">
+        <button class="send-btn" id="sendBtn" onclick="sendQuestion()" disabled>
+          <i class="fas fa-paper-plane"></i> Get Answer
+        </button>
+      </div>
+      <div class="mode-note"><i class="fas fa-circle-info"></i> Tap mic to record, tap again to stop — Groq transcribes it. Typed → answered in text (tap Listen to hear it too).</div>
+    </section>
+
+    <section class="quick-section" id="quickSection">
+      <div class="section-label">Quick Questions</div>
+      <div class="quick-grid" id="quickGrid"></div>
+    </section>
+
+    <section class="answer-area" id="answerArea">
+      <div class="welcome-state" id="welcomeState">
+        <div class="welcome-icon"><i class="fas fa-headset"></i></div>
+        <div class="welcome-title">Ready for Wipro prep</div>
+        <div class="welcome-sub">Ask any interview question by typing or voice. Answers are grounded in your actual profile, projects and experience — nothing invented.</div>
+      </div>
+    </section>
+
+    <section class="history-section" id="historySection" style="display:none">
+      <div class="history-header">
+        <div class="section-label">Previous Answers</div>
+        <button class="history-clear" onclick="clearHistory()">Clear all</button>
+      </div>
+      <div id="historyList"></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-title">Settings</div>
+    <div class="modal-sub">Add your Groq API key to power the assistant (chat answers + voice transcription). Get a free key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>. Saved only on this device.</div>
+    <div class="field-group">
+      <label class="field-label">Groq API Key</label>
+      <input type="password" class="field-input" id="apiKeyInput" placeholder="gsk_...">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Model</label>
+      <select class="field-input" id="modelSelect">
+        <option value="qwen/qwen3.8-27b">qwen 3.8 (Best quality, default)</option>
+        <option value="openai/gpt-oss-120b">GPT-OSS 120B (Strong reasoning)</option>
+        <option value="openai/gpt-oss-20b">GPT-OSS 20B (Fast)</option>
+        <option value="qwen/qwen3-32b">Qwen3 32B (Fast, long context)</option>
+        <option value="meta-llama/llama-prompt-guard-2-22m">Llama 3.1 8B (Fastest/cheapest)</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Answer Style</label>
+      <select class="field-input" id="styleSelect">
+        <option value="structured">Structured (Bullet points)</option>
+        <option value="conversational">Conversational spoken answer</option>
+        <option value="concise">Concise (Brief)</option>
+      </select>
+    </div>
+    <div class="field-group toggle-row">
+      <label class="field-label" style="margin-bottom:0">Always read answers aloud</label>
+      <label class="toggle-switch">
+        <input type="checkbox" id="autoSpeakToggle">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" onclick="toggleSettings()">Cancel</button>
+      <button class="modal-btn primary" onclick="saveSettings()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+  // ========== Knowledge base (embedded, used as grounding context for every answer) ==========
+  const KNOWLEDGE_BASE = `I am Manoj Kumar, a Computer Science and Engineering graduate currently working as a Solutions Developer in the ER&D / GenAI team at Tata Technologies in Pune.
+
+I am preparing for a Wipro technical interview for the role:
+
+"Lead Engineer – AI-Native Enterprise Platform (WINGS)"
+
+IMPORTANT:
+- I currently have around 1.2 years of professional experience.
+- The Wipro JD mentions 7–10 years of experience, so DO NOT pretend that I have 7–10 years.
+- I want to answer honestly while presenting my actual technical capabilities strongly.
+- If I don't have production experience with a technology, help me explain my conceptual understanding honestly instead of inventing experience.
+- Answers should sound like a real engineer speaking in an interview, not like a textbook.
+- Prefer concise, technically strong spoken answers.
+- If a question is about my project, only use details I have actually provided. Do not invent architecture, database, cloud service, deployment method, metrics, team size, or implementation details.
+
+==================================================
+1. MY PROFESSIONAL PROFILE
+==================================================
+
+Name: Manoj Kumar
+
+Education:
+- B.E. Computer Science and Engineering
+- Bannari Amman Institute of Technology, Anna University
+- Graduated in 2025
+- CGPA: 7.94
+
+Current role:
+- Solutions Developer
+- Tata Technologies
+- ER&D / GenAI team
+- Pune, Maharashtra
+- Joined in August 2025
+- Around 1.2 years of professional experience
+
+Professional focus:
+- Python
+- FastAPI
+- REST APIs
+- GenAI
+- LLM applications
+- RAG
+- AI/Agentic workflows
+- Engineering applications
+- React
+- SQL/PostgreSQL
+- Git
+
+My resume describes me as:
+"Software Engineer | Python Developer | AI-Enabled Applications"
+
+Professional summary:
+"Computer Science and Engineering graduate (B.E., 2025) with 1+ year of professional experience at Tata Technologies ER&D, building Python-based web applications and AI-enabled engineering tools. Hands-on with FastAPI backends, data-driven cost-estimation logic, and Retrieval-Augmented Generation (RAG) with LLMs. Solid grounding in debugging and version control with Git. Works independently on assigned engineering tasks and collaborates with technical teams to deliver working solutions."
+
+==================================================
+2. TECHNICAL SKILLS
+==================================================
+
+Programming: Python, SQL, JavaScript, HTML, CSS
+Software Engineering: OOP, Data Structures and Algorithms, Software Design Principles, Debugging, Problem Solving, Application Development, REST APIs
+Backend / Databases: FastAPI, Flask, SQL, SQLite, PostgreSQL
+AI / GenAI: Generative AI, Large Language Models, AI Agents, Copilot Agents, Azure Foundry, Microsoft Server
+GenAI tools / technologies: RAG, Prompt Engineering, Hugging Face, LangChain, FAISS, Ollama, MCP
+Tools: Git, GitHub, VS Code, Jupyter, Google Colab, AI-assisted coding/debugging using ChatGPT, Claude and Gemini
+
+==================================================
+3. MY TATA TECHNOLOGIES EXPERIENCE
+==================================================
+
+Company: Tata Technologies
+Role: Solutions Developer – ER&D / GenAI
+Location: Pune
+Experience: August 2025 – Present
+
+PROJECT / APPLICATION 1: Manufacturing Cost Estimation / Should-Costing Application
+
+What I worked on:
+- Developed a FastAPI / React JS web application for manufacturing cost estimation.
+- Supports multi-currency.
+- Uses dynamic cost tables for manufacturing commodities.
+- The application is related to engineering/manufacturing cost estimation.
+
+How to explain:
+"I worked on a manufacturing cost-estimation application using FastAPI for the backend and React for the frontend. The application supports dynamic cost tables for manufacturing commodities and multi-currency calculations. My role involved developing backend APIs and implementing the application logic required for the cost-estimation workflow. The goal was to provide an engineering-oriented application that makes cost calculations and related information easier to manage."
+
+IMPORTANT: If asked for exact database, cloud, deployment architecture, microservices, etc., DO NOT invent them unless explicitly provided.
+
+Possible follow-up questions: Why FastAPI? Why React? How did you structure your APIs? How did you handle validation? How did you handle errors? How would you scale the application? How would you secure the APIs? How would you deploy it? How would you convert this into microservices? How would you improve performance?
+
+==================================================
+4. PROJECT / APPLICATION 2: BATTERY DATA MANAGEMENT SYSTEM RAG CHATBOT
+==================================================
+
+Project: RAG-based chatbot for a Battery Data Management System.
+Objective: Allow users to interact with battery-related information using natural language, retrieve relevant domain information, provide grounded LLM responses.
+
+RAG pipeline:
+Documents / domain data → Data processing → Chunking → Embedding model → FAISS → Semantic similarity search → Relevant context → GPT-4o / LLaMA → Final answer
+
+Embedding model I used: all-MiniLM-L6-v2
+Vector search: FAISS
+LLMs: OpenAI GPT-4o, sometimes LLaMA
+
+IMPORTANT:
+- I used FAISS. Do NOT say I used Pinecone or Chroma unless explicitly told.
+- FAISS was used for vector indexing and similarity search.
+- FAISS is primarily a vector similarity-search library/indexing library, not a managed service like Pinecone.
+- Pinecone is a managed vector database/service. Chroma is another vector database/vector-store option.
+
+Interview explanation:
+"One of the GenAI projects I worked on at Tata Technologies was a RAG-based chatbot for a Battery Data Management System. The objective was to allow users to query battery-related information using natural language and receive responses grounded in the available domain data. We followed a Retrieval-Augmented Generation architecture. The relevant data was processed and divided into chunks. For generating embeddings, I used the all-MiniLM-L6-v2 model. The embeddings were indexed using FAISS. When a user submits a query, the query is converted into an embedding and a semantic similarity search is performed using FAISS to retrieve the most relevant information. The retrieved context is then provided to the LLM along with the user's question. For generation, I worked with OpenAI GPT-4o and in some cases LLaMA models. This approach allows the LLM to use domain-specific retrieved information instead of depending only on its pretrained knowledge."
+
+Q: "Why RAG instead of fine-tuning?"
+A: "RAG is useful when the model needs to work with domain-specific or changing information. Instead of modifying the model's weights, we retrieve relevant information at query time and provide it as context to the LLM. This also makes it easier to update the knowledge source without retraining the model."
+
+Q: "Why all-MiniLM-L6-v2?"
+A: "all-MiniLM-L6-v2 is a relatively lightweight sentence-transformer embedding model that can generate semantic vector representations efficiently. It was suitable for our semantic retrieval use case."
+
+Q: "Why FAISS?"
+A: "We used FAISS for vector indexing and similarity search. It provided an efficient way to index the embeddings and retrieve the most similar vectors for a user query. For our requirement, a lightweight vector-search approach was suitable."
+
+Q: "What is FAISS?"
+A: "FAISS stands for Facebook AI Similarity Search. It is primarily a library for efficient similarity search and clustering of dense vectors. In our RAG pipeline, we used it to index embeddings and retrieve the most relevant vectors."
+
+Q: "Did you use Pinecone?"
+A: "No. In this project I used FAISS for the vector indexing and similarity-search layer. I understand that Pinecone is a managed vector database/service, but it was not the vector system I used in this project."
+
+Q: "Did you use Chroma?"
+A: "No, I used FAISS in this project. Chroma is another vector-store/database option that can be used for RAG applications."
+
+Q: "What is the difference between embedding model and LLM?"
+A: "An embedding model converts text into numerical vector representations that capture semantic meaning and are mainly used for search or retrieval. An LLM processes language and generates responses. In our RAG pipeline, all-MiniLM-L6-v2 was used for embeddings and GPT-4o or LLaMA was used for generation."
+
+==================================================
+5. PROJECT / APPLICATION 3: WIRING HARNESS ASSISTANT
+==================================================
+
+I worked on a GenAI-based engineering workflow in Python involving a wiring harness assistant.
+Purpose: Retrieve process information, support initial circuit design tasks.
+
+Interview explanation:
+"Another GenAI workflow I worked on was a wiring harness assistant. The idea was to use Python and GenAI capabilities to retrieve relevant engineering/process information and support initial circuit design-related tasks. The system uses AI to make engineering information easier to access and assist engineers during early design activities."
+
+IMPORTANT: Do not invent exact LLM, database, vector database, cloud architecture, agent framework or deployment details unless provided.
+
+Potential questions: Why use an LLM? Is this an agent or RAG system? What tools would an agent need? How would you validate engineering output? How would you prevent hallucinations? How would you secure engineering data?
+
+==================================================
+6. PROJECT / APPLICATION 4: TEAR DOWN BENCHMARKING AGENT / TDBM
+==================================================
+
+I developed an Agent for Tear Down Benchmarking (TDBM) covering vehicle categories for Value Engineering activities.
+
+Interview explanation:
+"I also worked on a GenAI-based agent for Tear Down Benchmarking, or TDBM, across vehicle categories. The objective was to support comparisons used in Value Engineering activities. The agent helps automate parts of the information and comparison workflow, making it easier to analyze relevant vehicle benchmarking information."
+
+If asked about agentic AI:
+"An agent differs from a basic chatbot because it can use tools, retrieve information, follow a workflow and make decisions about which action to take rather than only generating a direct text response."
+
+Again: Do not invent specific tools, APIs, databases or multi-agent architecture unless provided.
+
+==================================================
+7. MY ACHIEVEMENT
+==================================================
+
+Winner: Tata Technologies Innovent 2024
+Project: GenAI-based car designing tool
+Outcome: Winner; paid internship at ER&D Tata Motors through Tata Technologies
+Also worked on: Business proposals, client business proposals, creating MVPs with modern AI features, improving delivery time
+
+==================================================
+8. WIPRO ROLE
+==================================================
+
+Role: Lead Engineer – AI-Native Enterprise Platform (WINGS)
+
+Wipro's JD mentions: 7–10 years software development experience, Agentic AI, LLM integrations, Python 3, FastAPI, Microservices, REST/GraphQL, PostgreSQL, MongoDB, Redis, Azure/AWS/GCP, Docker, Kubernetes, ServiceNow/Jira, OAuth2, JWT, CI/CD, Git, AI/GenAI enterprise applications, Agentic workflows, Prompt engineering, LLM orchestration, Embedding pipelines, RAG, Vector databases, pgvector, Weaviate, Pinecone, PostgreSQL/BigQuery, LangChain Agents, LangGraph, Multi-agent systems, Autonomous/semi-autonomous agents, Tool/function calling, Azure OpenAI/Vertex AI/Bedrock, Cloud deployment, Docker/Kubernetes, CI/CD, Terraform/ARM/Bicep/CloudFormation, Monitoring/logging/observability, OAuth2/JWT, RBAC, API security, PII/data governance, ServiceNow/Jira automation, Stakeholder discussions.
+
+IMPORTANT: I have around 1.2 years, not 7–10 years. If asked about the mismatch, answer honestly:
+"I currently have around 1.2 years of professional experience. My experience is primarily in Python, FastAPI, GenAI, RAG and AI-enabled engineering applications. I noticed the role description mentions 7–10 years, but since I received the technical interview invitation, I wanted to participate and demonstrate my technical capabilities."
+
+==================================================
+9–26. TECHNICAL PREP TOPICS
+==================================================
+
+Python: List, Tuple, Set, Dictionary, Comprehensions, Lambda, map/filter/sorted, key functions, *args/**kwargs, OOP, Inheritance, Polymorphism, Encapsulation, Abstraction, Decorators, Generators, Iterators, Context managers, Exception handling, Mutable vs immutable, Shallow vs deep copy, is vs ==, async/await, asyncio, threading, multiprocessing, GIL, memory management.
+Coding: Two Sum, Palindrome, Anagram, Frequency counting, Reverse string, Remove duplicates, Second largest, Sorting, Dictionary problems, Stack, Queue, Two pointers, Sliding window, Binary search.
+
+FastAPI: GET/POST/PUT/PATCH/DELETE, Path parameters, Query parameters, Request body, Pydantic, Response models, Validation, Dependency injection, Middleware, Exception handling, Async endpoints, CORS, Swagger/OpenAPI, Database integration, Authentication, JWT, OAuth2, REST API architecture.
+Basic architecture: Client → FastAPI → Router → Service layer → Database/AI service → Response.
+
+REST API / HTTP: REST, HTTP methods, status codes (200, 201, 400, 401, 403, 404, 409, 500), JSON, headers, request/response body, authentication, authorization, pagination, filtering, sorting, API versioning, rate limiting, idempotency, REST vs GraphQL.
+
+JWT/OAuth2/Security:
+"JWT is a token-based authentication mechanism. After successful login, the server issues a signed token. The client sends that token with subsequent API requests, usually in the Authorization header. The backend validates the token before processing the request."
+Know: Header, Payload, Signature, Expiration, Access token, Refresh token.
+Authentication = "Who are you?" Authorization = "What are you allowed to do?"
+OAuth2: "OAuth2 is an authorization framework used to allow applications to obtain access tokens and access protected resources."
+RBAC: "Role-Based Access Control assigns permissions through roles. For example, an admin role may have create/update/delete permissions while a viewer role may only have read access."
+
+LLM fundamentals: LLM, Transformer, Tokens, Context window, Temperature, Prompt engineering, System prompt, User prompt, Hallucination, Structured output, Function calling, Tool calling, Model selection, Token usage, Context management.
+
+RAG architecture: Data → Ingestion → Chunking → Embedding → Vector Index/Vector DB → Query embedding → Similarity search → Top-K retrieved chunks → Context construction → LLM → Answer.
+Know: Chunking, Chunk overlap, Embeddings, Semantic search, Similarity search, Top-K, Metadata, Reranking, Hybrid search, Hallucination reduction, RAG evaluation, Retrieval quality.
+
+Agentic AI:
+Chatbot: User → LLM → Response.
+RAG: User → Retrieval → Context → LLM → Response.
+Agent: User → Agent/LLM → Decide action → Tool/API → Observe result → Continue → Final answer.
+Know: Agent, Tools, Function calling, Planning, State, Memory, Decision-making, Multi-step workflows, Human-in-the-loop, Autonomous vs semi-autonomous, Agent evaluation, Agent safety.
+
+LangChain/LangGraph:
+LangChain: Prompt templates, Chains, Retrievers, Tools, Agents, Memory, Document loaders, Embeddings, Vector stores.
+LangGraph: Nodes, Edges, State, Conditional edges, Loops, Workflow, Human-in-the-loop, Multi-agent workflows.
+Q: "What is LangGraph?" A: "LangGraph is a framework for building stateful, multi-step LLM workflows and agentic applications. It represents workflows as graphs where nodes perform actions and edges define transitions. It is useful when an agent needs state, conditional execution, loops or multiple tool calls."
+
+Vector databases: FAISS = vector similarity search library, used by me, local/lightweight indexing/search. Chroma = vector database/store, useful for RAG. Pinecone = managed vector database/service. Weaviate = vector database. pgvector = PostgreSQL extension for vector similarity search.
+IMPORTANT: Do not claim production experience with Pinecone/Chroma/Weaviate/pgvector unless explicitly provided.
+
+PostgreSQL: Primary key, Foreign key, Joins, Index, Transactions, ACID, Normalization, GROUP BY, CTE, Window functions, Query optimization, Connection pooling. Also PostgreSQL + pgvector.
+
+Redis: In-memory data store, Cache, Key-value, TTL, Rate limiting, Session/cache use, Background jobs, Redis vs PostgreSQL.
+
+Microservices: Monolith vs microservices, Service boundaries, API Gateway, REST, Async communication, Database per service, Scalability, Fault isolation, Service discovery, Distributed systems challenges.
+
+Docker: Image, Container, Dockerfile, Build, Run, Ports, Environment variables, Volumes, Docker Compose, Container networking.
+
+Kubernetes (only basic conceptual understanding unless I actually have hands-on experience): Cluster, Node, Pod, Deployment, Service, ConfigMap, Secret, Ingress, Scaling, Rolling deployment, Health checks. If asked whether I used Kubernetes, answer honestly.
+
+Cloud: Compute, Storage, Database, Networking, IAM, Secrets, Monitoring, Load balancing, Autoscaling. Azure: Azure OpenAI, Azure AI services, Azure App Service, Azure Functions, Azure Storage, Azure Monitor, Azure Key Vault. Do not claim production deployment experience unless provided.
+
+CI/CD: Developer → Git push → CI pipeline → Tests → Build → Docker image → Deploy → Monitoring. Know: Git, Branch, Pull request, Merge, CI/CD, Testing, Build, Deployment.
+
+Monitoring/Observability: Logs, Metrics, Traces, API latency, Error rate, LLM latency, Token usage, AI cost, Retrieval quality.
+
+Data privacy/AI security: PII, Encryption, Secrets, Access control, Data retention, Secure logging, Prompt injection, Data leakage, RBAC.
+
+==================================================
+27. INTERVIEW INTRODUCTION (use when asked "Tell me about yourself")
+==================================================
+
+"Sure. I'm Manoj Kumar, a Computer Science and Engineering graduate, currently working as a Solutions Developer in the ER&D GenAI team at Tata Technologies. I have around 1.2 years of professional experience, mainly working with Python, FastAPI, REST APIs and AI-enabled engineering applications. In my current role, I've worked on a manufacturing cost-estimation application using FastAPI and React, and I've also worked on GenAI projects including a RAG-based chatbot for a Battery Data Management System, a wiring-harness assistant and a Tear Down Benchmarking agent. My main technical interests are Python backend development, FastAPI, RAG, LLM applications and agentic AI. I enjoy working on applications where AI is integrated with real engineering workflows and backend systems. I'm now looking for an opportunity where I can deepen my backend and GenAI engineering experience and work on larger-scale enterprise AI applications."
+
+==================================================
+28. HOW TO HANDLE THE 7–10 YEAR EXPERIENCE QUESTION
+==================================================
+
+Q: "The role requires 7–10 years, but you have only 1.2 years. Why are you interviewing?"
+A: "Yes, I understand that the job description mentions 7–10 years of experience. I currently have around 1.2 years of professional experience, primarily focused on Python, FastAPI, GenAI, RAG and AI-enabled engineering applications. I noticed the experience requirement after receiving the interview invitation, and rather than assuming whether I was eligible, I decided to participate and demonstrate my technical capabilities. I understand there are areas of the role where I have less production experience, but I have hands-on experience in several of the core technologies and I'm very interested in growing into larger enterprise AI systems."
+
+==================================================
+29. DO NOT INVENT
+==================================================
+
+Never invent: Team size, Number of users, Production traffic, Cloud deployment, Kubernetes production experience, Terraform experience, ServiceNow experience, Pinecone experience, Chroma experience, Weaviate experience, pgvector experience, Exact database architecture, Exact embedding dimensions, Exact chunk size, Exact retrieval score, Exact latency improvement, Exact cost reduction, Exact accuracy percentage, Exact LLM parameters, Exact deployment infrastructure. If details are provided later in a question, use them; otherwise say honestly what is not yet production experience.
+
+Example honesty answers:
+Q: "Have you deployed Kubernetes in production?" A: "I haven't deployed Kubernetes in production yet. I understand the core concepts such as pods, deployments and services, and I understand how Kubernetes fits into containerized application deployment."
+Q: "Have you used Pinecone?" A: "I haven't used Pinecone in this project. I used FAISS for vector indexing and similarity search. I understand the purpose of managed vector databases such as Pinecone."
+Q: "Have you implemented ServiceNow integration?" A: "I haven't implemented ServiceNow integration directly yet, but I understand that it can be integrated through REST APIs and authentication mechanisms, and I can explain how I would approach such an integration."
+
+==================================================
+30. GOAL
+==================================================
+
+The goal is NOT to pretend I am a 7–10 year senior engineer. The goal is to present my real 1.2 years of experience strongly, demonstrate deep understanding of Python/FastAPI/GenAI/RAG/Agentic AI, explain my Tata Technologies projects clearly, and answer architecture/security/cloud questions honestly.`;
+
+  // ========== State ==========
+  let apiKey = localStorage.getItem('groq_api_key') || '';
+  let model = localStorage.getItem('groq_model') || 'llama-3.3-70b-versatile';
+  let answerStyle = localStorage.getItem('answer_style') || 'conversational';
+  let autoSpeak = localStorage.getItem('auto_speak') === 'true';
+  let currentCat = 'general';
+  let isListening = false;
+  let isTranscribing = false;
+  let mediaRecorder = null;
+  let audioChunks = [];
+  let mediaStream = null;
+  let lastInputSource = 'text';
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('interview_history') || '[]'); } catch (e) { history = []; }
+  let isLoading = false;
+
+  const catLabels = {
+    general: 'General', behavioral: 'Behavioral', pyfast: 'Python/FastAPI',
+    genai: 'GenAI/RAG', projects: 'My Projects', wipro: 'Wipro Role (WINGS)', cloud: 'System/Cloud'
+  };
+
+  // ========== Quick Questions ==========
+  const quickQuestions = {
+    general: [
+      { icon: '🧑', text: 'Tell me about yourself' },
+      { icon: '🏢', text: 'Explain your current role' },
+      { icon: '🎯', text: 'Why are you interested in this role?' },
+      { icon: '💪', text: 'What is your biggest technical challenge?' },
+    ],
+    behavioral: [
+      { icon: '🔄', text: 'Tell me about a time you handled conflict' },
+      { icon: '🏆', text: 'Describe a time you exceeded expectations' },
+      { icon: '❌', text: 'Tell me about a failure and what you learned' },
+      { icon: '🤝', text: 'Describe working with a difficult teammate' },
+    ],
+    pyfast: [
+      { icon: '🐍', text: 'What is the difference between a list and a tuple?' },
+      { icon: '⚡', text: 'Explain async/await and the GIL' },
+      { icon: '🧩', text: 'What is dependency injection in FastAPI?' },
+      { icon: '🔐', text: 'How would you secure a FastAPI API?' },
+    ],
+    genai: [
+      { icon: '🔎', text: 'Explain your complete RAG pipeline' },
+      { icon: '📦', text: 'Why did you use FAISS instead of Pinecone?' },
+      { icon: '🤖', text: 'What is the difference between an agent and a chatbot?' },
+      { icon: '🧠', text: 'How would you reduce hallucinations in RAG?' },
+    ],
+    projects: [
+      { icon: '💰', text: 'Explain your manufacturing cost-estimation application' },
+      { icon: '🔋', text: 'Explain your Battery Data Management RAG chatbot' },
+      { icon: '🔌', text: 'Explain your wiring harness assistant' },
+      { icon: '🚗', text: 'Explain your Tear Down Benchmarking (TDBM) agent' },
+    ],
+    wipro: [
+      { icon: '⏳', text: 'The role requires 7–10 years, you have 1.2 — why should we consider you?' },
+      { icon: '☸️', text: 'Have you deployed Kubernetes in production?' },
+      { icon: '🌲', text: 'Have you used Pinecone or LangGraph?' },
+      { icon: '❓', text: 'Why Wipro, and why this role?' },
+    ],
+    cloud: [
+      { icon: '🧱', text: 'Monolith vs microservices — explain the trade-offs' },
+      { icon: '🐳', text: 'Docker vs Kubernetes' },
+      { icon: '🔁', text: 'Explain a typical CI/CD pipeline' },
+      { icon: '📊', text: 'How would you monitor a production AI application?' },
+    ],
+  };
+
+  // ========== Init ==========
+  function init() {
+    updateApiBadge();
+    renderQuickQuestions();
+    renderHistory();
+    document.getElementById('questionInput').addEventListener('input', function () {
+      lastInputSource = 'text';
+      onInputChange();
+    });
+    document.getElementById('questionInput').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendQuestion(); }
+    });
+    checkVoiceSupport();
+  }
+
+  function onInputChange() {
+    const val = document.getElementById('questionInput').value.trim();
+    document.getElementById('sendBtn').disabled = val.length === 0 || isLoading;
+  }
+
+  function updateApiBadge() {
+    const badge = document.getElementById('apiBadge');
+    if (apiKey) {
+      badge.className = 'api-badge connected';
+      badge.innerHTML = '<i class="fas fa-circle" style="font-size:5px"></i> Connected';
+    } else {
+      badge.className = 'api-badge disconnected';
+      badge.innerHTML = '<i class="fas fa-circle" style="font-size:5px"></i> No API';
+    }
+  }
+
+  // ========== Categories ==========
+  function selectCat(el) {
+    document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    currentCat = el.getAttribute('data-cat');
+    renderQuickQuestions();
+  }
+
+  function renderQuickQuestions() {
+    const grid = document.getElementById('quickGrid');
+    const items = quickQuestions[currentCat] || [];
+    grid.innerHTML = items.map(q => `
+      <div class="quick-card" onclick="askQuick('${escapeAttr(q.text)}')">
+        <div class="quick-card-icon">${q.icon}</div>
+        <div class="quick-card-text">${escapeHtml(q.text)}</div>
+      </div>
+    `).join('');
+  }
+
+  function askQuick(text) {
+    lastInputSource = 'text';
+    document.getElementById('questionInput').value = text;
+    onInputChange();
+    sendQuestion();
+  }
+
+  // ========== Voice input (MediaRecorder + Groq Whisper transcription) ==========
+  // Replaces the old browser SpeechRecognition API, which iOS Safari never
+  // implements and Android Chrome handles unreliably. This records audio
+  // locally and sends it to Groq's whisper-large-v3-turbo endpoint, which
+  // works the same way on any modern mobile browser.
+  function checkVoiceSupport() {
+    const supported = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+    if (!supported) {
+      document.getElementById('voiceBtn').style.display = 'none';
+    }
+    // Mic access requires a secure context (https:// or localhost). Warn
+    // once if the page is being opened over plain http:// or file://.
+    const isSecure = window.isSecureContext;
+    if (supported && !isSecure) {
+      document.getElementById('voiceBtn').title = 'Voice needs HTTPS — host this file online to use the mic on mobile.';
+    }
+  }
+
+  async function toggleVoice() {
+    if (isTranscribing) return;
+    if (isListening) { stopRecording(); return; }
+
+    if (!apiKey) {
+      showToast('error', 'Add your Groq API key in Settings first — voice needs it too.');
+      toggleSettings();
+      return;
+    }
+    if (!window.isSecureContext) {
+      showToast('error', 'Microphone needs HTTPS. Host this file online (not file://) to use voice on mobile.');
+      return;
+    }
+
+    try {
+      mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      showToast('error', 'Microphone access denied or unavailable.');
+      return;
+    }
+
+    audioChunks = [];
+    let options = {};
+    if (window.MediaRecorder.isTypeSupported && window.MediaRecorder.isTypeSupported('audio/webm')) {
+      options = { mimeType: 'audio/webm' };
+    } else if (window.MediaRecorder.isTypeSupported && window.MediaRecorder.isTypeSupported('audio/mp4')) {
+      options = { mimeType: 'audio/mp4' };
+    }
+    try {
+      mediaRecorder = new MediaRecorder(mediaStream, options);
+    } catch (e) {
+      mediaRecorder = new MediaRecorder(mediaStream);
+    }
+    mediaRecorder.ondataavailable = function (e) { if (e.data && e.data.size > 0) audioChunks.push(e.data); };
+    mediaRecorder.onstop = handleRecordingStop;
+    mediaRecorder.start();
+
+    isListening = true;
+    document.getElementById('voiceBtn').classList.add('listening');
+    document.getElementById('voiceStatusText').textContent = 'Listening... tap mic again to stop';
+    document.getElementById('voiceStatus').classList.add('show');
+  }
+
+  function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
+    }
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(t => t.stop());
+      mediaStream = null;
+    }
+    isListening = false;
+    document.getElementById('voiceBtn').classList.remove('listening');
+  }
+
+  async function handleRecordingStop() {
+    const mimeType = (mediaRecorder && mediaRecorder.mimeType) || 'audio/webm';
+    const blob = new Blob(audioChunks, { type: mimeType });
+    audioChunks = [];
+
+    if (blob.size < 800) {
+      document.getElementById('voiceStatus').classList.remove('show');
+      showToast('info', 'Recording was too short — try again and speak right after tapping.');
+      return;
+    }
+
+    isTranscribing = true;
+    document.getElementById('voiceBtn').classList.add('transcribing');
+    document.getElementById('voiceStatusText').textContent = 'Transcribing...';
+    document.getElementById('voiceStatus').classList.add('show');
+
+    try {
+      const transcript = await transcribeAudio(blob, mimeType);
+      document.getElementById('questionInput').value = transcript;
+      lastInputSource = 'voice';
+      onInputChange();
+    } catch (err) {
+      showToast('error', err.message || 'Transcription failed. Try again.');
+    } finally {
+      isTranscribing = false;
+      document.getElementById('voiceBtn').classList.remove('transcribing');
+      document.getElementById('voiceStatus').classList.remove('show');
+    }
+  }
+
+  async function transcribeAudio(blob, mimeType) {
+    const url = 'https://api.groq.com/openai/v1/audio/transcriptions';
+    const ext = mimeType.includes('mp4') ? 'mp4' : mimeType.includes('ogg') ? 'ogg' : 'webm';
+    const formData = new FormData();
+    formData.append('file', blob, `recording.${ext}`);
+    formData.append('model', 'whisper-large-v3-turbo');
+    formData.append('response_format', 'json');
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}` },
+      body: formData
+    });
+    if (!res.ok) {
+      let msg = `Transcription failed (${res.status})`;
+      try { const errData = await res.json(); if (errData.error && errData.error.message) msg = errData.error.message; } catch (e) {}
+      throw new Error(msg);
+    }
+    const data = await res.json();
+    if (!data.text || !data.text.trim()) throw new Error('No speech detected. Try again.');
+    return data.text.trim();
+  }
+
+  // ========== Sending questions ==========
+  async function sendQuestion() {
+    const input = document.getElementById('questionInput');
+    const question = input.value.trim();
+    if (!question || isLoading) return;
+
+    if (!apiKey) {
+      showToast('error', 'Add your Groq API key in Settings first.');
+      toggleSettings();
+      return;
+    }
+
+    const askedViaVoice = lastInputSource === 'voice';
+    isLoading = true;
+    document.getElementById('sendBtn').disabled = true;
+    showLoading();
+
+    try {
+      const answerText = await callGroq(question);
+      const cardId = renderAnswer(question, answerText);
+      saveToHistory(question, answerText);
+      input.value = '';
+      lastInputSource = 'text';
+      if ((askedViaVoice || autoSpeak) && 'speechSynthesis' in window) {
+        const btn = document.querySelector(`#${cardId} .action-btn[data-role="listen"]`);
+        speakAnswer(cardId, btn);
+      }
+    } catch (err) {
+      hideLoading();
+      showToast('error', err.message || 'Something went wrong. Check your API key and try again.');
+    } finally {
+      isLoading = false;
+      onInputChange();
+    }
+  }
+
+  function buildSystemPrompt() {
+    return `${KNOWLEDGE_BASE}
+
+==================================================
+CURRENT TASK
+==================================================
+You are Manoj's interview preparation assistant. Use ONLY the profile, project and experience details above — never invent architecture, metrics, team size, cloud services, or years of experience beyond what is stated. Follow the honesty rules above strictly.
+
+After the main answer, add a line starting with "TIP:" followed by one concise, practical delivery tip for answering the interviewer's specific question well in the real Wipro interview.`;
+  }
+
+  function buildUserPrompt(question) {
+    const styleInstructions = {
+      structured: 'Format the main answer with short paragraphs and bullet points where useful. Bold the most important phrases using **double asterisks**.',
+      conversational: 'Give a natural, 30-60 second spoken answer, as if speaking it out loud in the interview. Minimal bullet points.',
+      concise: 'Answer briefly and directly in 3-5 sentences or a short bullet list. No filler.'
+    };
+    return `The interviewer's question (category: ${catLabels[currentCat] || 'General'}) is:
+"${question}"
+
+${styleInstructions[answerStyle] || styleInstructions.conversational}`;
+  }
+
+  async function callGroq(question) {
+    const url = 'https://api.groq.com/openai/v1/chat/completions';
+    const body = {
+      model: model,
+      messages: [
+        { role: 'system', content: buildSystemPrompt() },
+        { role: 'user', content: buildUserPrompt(question) }
+      ],
+      temperature: 0.6,
+      max_tokens: 900
+    };
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) {
+      let msg = `Request failed (${res.status})`;
+      try { const errData = await res.json(); if (errData.error && errData.error.message) msg = errData.error.message; } catch (e) {}
+      throw new Error(msg);
+    }
+    const data = await res.json();
+    const choice = data.choices && data.choices[0];
+    const text = choice && choice.message ? choice.message.content : '';
+    if (!text) throw new Error('No answer returned. Try rephrasing the question.');
+    return text;
+  }
+
+  // ========== Rendering answers ==========
+  function showLoading() {
+    document.getElementById('welcomeState').style.display = 'none';
+    const area = document.getElementById('answerArea');
+    const existing = document.getElementById('loadingCard');
+    if (existing) existing.remove();
+    const card = document.createElement('div');
+    card.className = 'loading-card';
+    card.id = 'loadingCard';
+    card.innerHTML = `<div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">Preparing your answer...</div>`;
+    area.prepend(card);
+  }
+
+  function hideLoading() { const card = document.getElementById('loadingCard'); if (card) card.remove(); }
+
+  function splitAnswerAndTip(raw) {
+    const tipMatch = raw.match(/TIP:\s*([\s\S]*)$/i);
+    let tip = '', answer = raw;
+    if (tipMatch) { tip = tipMatch[1].trim(); answer = raw.slice(0, tipMatch.index).trim(); }
+    return { answer, tip };
+  }
+
+  function formatAnswerText(text) {
+    let escaped = escapeHtml(text);
+    escaped = escaped.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const lines = escaped.split('\n');
+    let html = '', inList = false;
+    lines.forEach(line => {
+      const trimmed = line.trim();
+      if (/^[-*•]\s+/.test(trimmed)) {
+        if (!inList) { html += '<ul>'; inList = true; }
+        html += `<li>${trimmed.replace(/^[-*•]\s+/, '')}</li>`;
+      } else {
+        if (inList) { html += '</ul>'; inList = false; }
+        if (trimmed) html += `<p>${trimmed}</p>`;
+      }
+    });
+    if (inList) html += '</ul>';
+    return html || `<p>${escaped}</p>`;
+  }
+
+  function renderAnswer(question, rawAnswer) {
+    hideLoading();
+    document.getElementById('welcomeState').style.display = 'none';
+    const { answer, tip } = splitAnswerAndTip(rawAnswer);
+    const area = document.getElementById('answerArea');
+    const id = 'ans_' + Date.now();
+
+    const card = document.createElement('div');
+    card.className = 'answer-card';
+    card.id = id;
+    card.innerHTML = `
+      <div class="answer-header">
+        <div class="answer-q-icon"><i class="fas fa-question"></i></div>
+        <div class="answer-q-text">${escapeHtml(question)}</div>
+        <div class="answer-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+      </div>
+      <div class="answer-body">
+        <div class="answer-label">Suggested Answer</div>
+        <div class="answer-text">${formatAnswerText(answer)}</div>
+        ${tip ? `<div class="answer-tips"><div class="tip-label"><i class="fas fa-lightbulb"></i> Delivery Tip</div><div class="tip-text">${escapeHtml(tip)}</div></div>` : ''}
+      </div>
+      <div class="answer-actions">
+        <button class="action-btn" data-role="listen" onclick="speakAnswer('${id}', this)"><i class="fas fa-volume-high"></i> Listen</button>
+        <button class="action-btn" onclick="copyAnswer('${id}')"><i class="fas fa-copy"></i> Copy</button>
+      </div>
+    `;
+    area.prepend(card);
+    card.dataset.fullText = answer + (tip ? '\n\nTip: ' + tip : '');
+    return id;
+  }
+
+  // ========== Speech / copy ==========
+  let currentUtterance = null;
+  function speakAnswer(cardId, btn) {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+    if (!('speechSynthesis' in window)) { showToast('error', 'Text-to-speech is not supported on this browser.'); return; }
+    if (currentUtterance && speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+      document.querySelectorAll('.action-btn.speaking').forEach(b => b.classList.remove('speaking'));
+      currentUtterance = null;
+      return;
+    }
+    const text = card.dataset.fullText || '';
+    currentUtterance = new SpeechSynthesisUtterance(text);
+    currentUtterance.rate = 1;
+    if (btn) {
+      currentUtterance.onend = () => btn.classList.remove('speaking');
+      btn.classList.add('speaking');
+    }
+    speechSynthesis.speak(currentUtterance);
+  }
+
+  function copyAnswer(cardId) {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+    const text = card.dataset.fullText || '';
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => showToast('success', 'Answer copied to clipboard')).catch(() => showToast('error', 'Could not copy'));
+    } else { showToast('error', 'Clipboard not available'); }
+  }
+
+  // ========== History ==========
+  function saveToHistory(question, rawAnswer) {
+    history.unshift({ question, rawAnswer, cat: currentCat, time: Date.now() });
+    if (history.length > 30) history = history.slice(0, 30);
+    try { localStorage.setItem('interview_history', JSON.stringify(history)); } catch (e) {}
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const section = document.getElementById('historySection');
+    const list = document.getElementById('historyList');
+    if (!history.length) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+    list.innerHTML = history.map((h, i) => `
+      <div class="history-item" onclick="replayHistory(${i})">
+        <div class="history-item-q">${escapeHtml(h.question)}</div>
+        <div class="history-item-meta">${catLabels[h.cat] || 'General'} · ${new Date(h.time).toLocaleDateString()}</div>
+      </div>
+    `).join('');
+  }
+
+  function replayHistory(i) {
+    const h = history[i];
+    if (!h) return;
+    renderAnswer(h.question, h.rawAnswer);
+  }
+
+  function clearHistory() {
+    history = [];
+    try { localStorage.removeItem('interview_history'); } catch (e) {}
+    renderHistory();
+    showToast('info', 'History cleared');
+  }
+
+  // ========== Settings ==========
+  function toggleSettings() {
+    const modal = document.getElementById('settingsModal');
+    if (!modal.classList.contains('show')) {
+      document.getElementById('apiKeyInput').value = apiKey;
+      document.getElementById('modelSelect').value = model;
+      document.getElementById('styleSelect').value = answerStyle;
+      document.getElementById('autoSpeakToggle').checked = autoSpeak;
+    }
+    modal.classList.toggle('show');
+  }
+
+  function saveSettings() {
+    apiKey = document.getElementById('apiKeyInput').value.trim();
+    model = document.getElementById('modelSelect').value;
+    answerStyle = document.getElementById('styleSelect').value;
+    autoSpeak = document.getElementById('autoSpeakToggle').checked;
+    try {
+      localStorage.setItem('groq_api_key', apiKey);
+      localStorage.setItem('groq_model', model);
+      localStorage.setItem('answer_style', answerStyle);
+      localStorage.setItem('auto_speak', String(autoSpeak));
+    } catch (e) {}
+    updateApiBadge();
+    toggleSettings();
+    showToast('success', apiKey ? 'Settings saved' : 'API key removed');
+  }
+
+  // ========== Toasts ==========
+  function showToast(type, message) {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
+  }
+
+  // ========== Utils ==========
+  function escapeHtml(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
+  function escapeAttr(str) { return String(str).replace(/'/g, "\\'"); }
+
+  init();
+</script>
+</body>
+</html>
